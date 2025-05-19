@@ -4,25 +4,30 @@
   <meta charset="UTF-8">
   <title>Digit Span Test</title>
   <style>
+    /* فونت Alice از گوگل */
     @import url('https://fonts.googleapis.com/css2?family=Alice&display=swap');
+    /* فونت فارسی Gandom */
     @font-face {
       font-family: 'Gandom';
       src: url('Gandom.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
     }
 
+    /* کل صفحه: مرکزچین و پر کردن فضا */
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       background: #fff;
-      font-family: 'Gandom', 'Alice', sans-serif;
+      font-family: 'Gandom','Alice',sans-serif;
       direction: rtl;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
     }
 
+    /* کانتینر */
     #container {
       width: 100%;
       max-width: 450px;
@@ -36,14 +41,16 @@
       text-align: center;
     }
 
+    /* گرید اعداد: واکنش‌گرا با 1fr */
     #grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-gap: 4vw;
-      justify-content: center;
+      justify-items: center;
       margin: 20px 0;
     }
 
+    /* سلول‌ها */
     .cell {
       width: 24vw;
       height: 24vw;
@@ -59,26 +66,12 @@
       justify-content: center;
     }
 
-    @media (min-width: 600px) {
-      .cell{
-        width:90px;
-        height:90px;
-        font-size:28px;
-      }
-      #grid {
-        grid-gap:10px;
-      }
-    }
-
-      
-
-
-      
     .cell.active {
       background: #f1c40f;
       transform: scale(1.2);
     }
 
+    /* دکمه‌ها و متن‌ها */
     button {
       padding: 10px 20px;
       font-size: 18px;
@@ -90,19 +83,26 @@
       font-family: inherit;
     }
 
-    #info { font-size: 16px; margin: 10px 0; text-align: center; }
-    #prompt { font-size: 18px; margin-top: 10px; height: 24px; text-align: center; }
-    #result { display: none; margin-top: 20px; text-align: center; }
+    #info, #prompt, #result p {
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    #prompt { height: 24px; }
+
+    #result { display: none; }
+
     #score { font-weight: bold; }
 
-    @media (max-width: 500px) {
+    /* تنظیمات برای دسکتاپ */
+    @media (min-width: 600px) {
       .cell {
-        width: 80px;
-        height: 80px;
-        font-size: 24px;
+        width: 90px;
+        height: 90px;
+        font-size: 28px;
       }
       #grid {
-        grid-gap: 8px;
+        grid-gap: 10px;
       }
     }
   </style>
@@ -110,6 +110,7 @@
 <body>
   <div id="container">
     <h2>Digit Span Test</h2>
+
     <div id="intro">
       <p>توالی اعداد را به خاطر بسپار و سپس تکرار کن.</p>
       <button id="startBtn">شروع آزمون</button>
@@ -142,20 +143,20 @@
     const TOTAL_TRIALS = 10;
     let sequence = [], userSeq = [], trial = 0, score = 0;
 
-    const startBtn  = document.getElementById('startBtn');
-    const retryBtn  = document.getElementById('retryBtn');
-    const introEl   = document.getElementById('intro');
-    const testEl    = document.getElementById('test');
-    const resultEl  = document.getElementById('result');
-    const gridEls   = document.querySelectorAll('.cell');
-    const trialNum  = document.getElementById('trialNum');
-    const promptEl  = document.getElementById('prompt');
-    const scoreEl   = document.getElementById('score');
+    const startBtn = document.getElementById('startBtn');
+    const retryBtn = document.getElementById('retryBtn');
+    const introEl  = document.getElementById('intro');
+    const testEl   = document.getElementById('test');
+    const resultEl = document.getElementById('result');
+    const gridEls  = document.querySelectorAll('.cell');
+    const trialNum = document.getElementById('trialNum');
+    const promptEl = document.getElementById('prompt');
+    const scoreEl  = document.getElementById('score');
 
     function toPersianNumber(input) {
-      const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+      const persian = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
       return String(input).split('').map(ch =>
-        /\d/.test(ch) ? persianDigits[ch] : ch
+        /\d/.test(ch) ? persian[ch] : ch
       ).join('');
     }
 
