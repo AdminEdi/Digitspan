@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>Digit Span Test</title>
+  <style>
+    /* فونت Alice از گوگل */
+    @import url('https://fonts.googleapis.com/css2?family=Alice&display=swap');
+    /* تعریف فونت فارسی Gandom */
+    @font-face {
+      font-family: 'Gandom';
+      src: url('Gandom.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0; padding: 0;
+      background: #fff;
+      font-family: 'Gandom', 'Alice', sans-serif;
+      direction: rtl;
+    }
+
+    #container {
+      max-width: 360px;
+      margin: auto;
+      padding: 30px;
+      background: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-gap: 10px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .cell {
+      width: 100px;
+      height: 100px;
+      font-size: 32px;
+      background: #aaa;
+      border-radius: 4px;
+      cursor: pointer;
+      user-select: none;
+      color: #fff;
+      transition: transform 0.1s, background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cell.active {
+      background: #f1c40f;
+      transform: scale(1.2);
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 4px;
+      background: #2980b9;
+      color: #fff;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    #info { font-size: 16px; margin: 10px 0; }
+    #prompt { font-size: 18px; margin-top: 10px; height: 24px; }
+    #result { display: none; margin-top: 20px; }
+    #score { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h2>Digit Span Test</h2>
+    <div id="intro">
+      <p>توالی اعداد را به خاطر بسپار و سپس تکرار کن.</p>
+      <button id="startBtn">شروع آزمون</button>
+    </div>
+
+    <div id="test" style="display:none;">
+      <div id="info">مرحله <span id="trialNum">1</span> از ۱۰</div>
+      <div id="grid">
+        <div class="cell" data-val="1">1</div>
+        <div class="cell" data-val="2">2</div>
+        <div class="cell" data-val="3">3</div>
+        <div class="cell" data-val="4">4</div>
+        <div class="cell" data-val="5">5</div>
+        <div class="cell" data-val="6">6</div>
+        <div class="cell" data-val="7">7</div>
+        <div class="cell" data-val="8">8</div>
+        <div class="cell" data-val="9">9</div>
+      </div>
+      <div id="prompt">منتظر توالی باشید...</div>
+    </div>
+
+    <div id="result">
+      <p>آزمون به پایان رسید!</p>
+      <p>تعداد پاسخ صحیح: <span id="score"></span> از ۱۰</p>
+      <button id="retryBtn">تکرار آزمون</button>
+    </div>
+  </div>
+
+  <script>
+    const TOTAL_TRIALS = 10;
+    let sequence = [], userSeq = [], trial = 0, score = 0;
+
+    const startBtn  = document.getElementById('startBtn');
+    const retryBtn  = document.getElementById('retryBtn');
+    const introEl   = document.getElementById('intro');
+    const testEl    = document.getElementById('test');
+    const resultEl  = document.getElementById('result');
+    const gridEls   = document.querySelectorAll('.cell');
+    const trialNum  = document.getElementById('trialNum');
+    const promptEl  = document.getElementById('prompt');
+    const scoreEl   = document.getElementById('score');
+
+    // تابع تبدیل ارقام انگلیسی به فارسی
+    function toPersianNumber(input) {
+      const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+      return String(input).split('').map(ch =>
+        /\d/.test(ch) ? persianDigits[ch] : ch
+      ).join('');
+    }
+
+    startBtn.onclick = () => {
+      introEl.style.display  = 'none';
+      resultEl.style.display = 'none';
+      testEl.style.display   = 'block';
+      trial = 0; score = 0;
+      nextTrial();
+    };
+
+    retryBtn.onclick = () => {
+      introEl.style.display  = 'block';
+      resultEl.style.display = 'none';
+    };
+
+    gridEls.forEach(cell => {
+      cell.onclick = () => {
+        if (promptEl.textContent !== 'نوبت شماست') return;
+        userSeq.push(cell.dataset.val);
+        flash(cell);
+        if (userSeq.length === sequence.length) {
+          setTimeout(checkAnswer, 300);
+        }
+      };
+    });
+
+    function nextTrial() {
+      trial++;
+      trialNum.textContent = toPersianNumber(trial);
+      userSeq = [];
+      // طول توالی: از ۴ شروع و هر دو مرحله یک واحد اضافه
+      const spanLength = 4 + Math.floor((trial - 1) / 2);
+      sequence = Array.from({length: spanLength}, () =>
+        String(Math.floor(Math.random() * 9) + 1)
+      );
+      promptEl.textContent = 'در حال نمایش...';
+      playSequence(0);
+    }
+
+    function playSequence(i) {
+      if (i >= sequence.length) {
+        setTimeout(() => promptEl.textContent = 'نوبت شماست', 500);
+        return;
+      }
+      const val = sequence[i];
+      const cell = [...gridEls].find(c => c.dataset.val === val);
+      flash(cell);
+      setTimeout(() => playSequence(i + 1), 700);
+    }
+
+    function flash(cell) {
+      cell.classList.add('active');
+      setTimeout(() => cell.classList.remove('active'), 400);
+    }
+
+    function checkAnswer() {
+      if (sequence.every((v,i) => v === userSeq[i])) score++;
+      if (trial < TOTAL_TRIALS) {
+        promptEl.textContent = 'منتظر توالی باشید...';
+        setTimeout(nextTrial, 500);
+      } else {
+        endTest();
+      }
+    }
+
+    function endTest() {
+      testEl.style.display   = 'none';
+      // نمایش نتیجه با ارقام فارسی
+      scoreEl.textContent    = toPersianNumber(score);
+      resultEl.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
