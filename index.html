@@ -38,18 +38,18 @@
 
     #grid {
       display: grid;
-      grid-template-columns: repeat(3, 100px);
-      grid-gap: 10px;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 4vw;
       justify-content: center;
       margin: 20px 0;
     }
 
     .cell {
-      width: 100px;
-      height: 100px;
-      font-size: 32px;
+      width: 24vw;
+      height: 24vw;
+      font-size: 6vw;
       background: #aaa;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
       user-select: none;
       color: #fff;
@@ -59,6 +59,21 @@
       justify-content: center;
     }
 
+    @media (main-width: 600px) {
+      .cell{
+        width:100px;
+        height:100px;
+        font-size:32px;
+      }
+      .grid {
+        grid-gap:10px;
+      }
+    }
+
+      
+
+
+      
     .cell.active {
       background: #f1c40f;
       transform: scale(1.2);
