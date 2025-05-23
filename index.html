@@ -2,12 +2,11 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=divice-width, initial-scale=1.0">
+  <!-- اصلاح viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Digit Span Test</title>
   <style>
-    /* فونت Alice از گوگل */
     @import url('https://fonts.googleapis.com/css2?family=Alice&display=swap');
-    /* فونت فارسی Gandom */
     @font-face {
       font-family: 'Gandom';
       src: url('Gandom.woff2') format('woff2');
@@ -15,7 +14,6 @@
       font-style: normal;
     }
 
-    /* کل صفحه: مرکزچین و پر کردن فضا */
     html, body {
       margin: 0;
       padding: 0;
@@ -28,7 +26,6 @@
       justify-content: center;
     }
 
-    /* کانتینر */
     #container {
       width: 100%;
       max-width: 450px;
@@ -42,7 +39,6 @@
       text-align: center;
     }
 
-    /* گرید اعداد: واکنش‌گرا با 1fr */
     #grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -51,7 +47,6 @@
       margin: 20px 0;
     }
 
-    /* سلول‌ها */
     .cell {
       width: 24vw;
       height: 24vw;
@@ -72,7 +67,6 @@
       transform: scale(1.2);
     }
 
-    /* دکمه‌ها و متن‌ها */
     button {
       padding: 10px 20px;
       font-size: 18px;
@@ -82,6 +76,8 @@
       color: #fff;
       cursor: pointer;
       font-family: inherit;
+      display: inline-block;
+      margin-top: 20px;
     }
 
     #info, #prompt, #result p {
@@ -90,12 +86,9 @@
     }
 
     #prompt { height: 24px; }
-
     #result { display: none; }
-
     #score { font-weight: bold; }
 
-    /* تنظیمات برای دسکتاپ */
     @media (min-width: 600px) {
       .cell {
         width: 90px;
@@ -114,7 +107,7 @@
 
     <div id="intro" style="text-align: center;">
       <p>توالی اعداد را به خاطر بسپار و سپس تکرار کن.</p>
-      <button id="startBtn" style="display:inline-block; margin-top: 20px;">شروع آزمون</button>
+      <button id="startBtn">شروع آزمون</button>
     </div>
 
     <div id="test" style="display:none;">
@@ -136,12 +129,15 @@
     <div id="result">
       <p>آزمون به پایان رسید!</p>
       <p>تعداد پاسخ صحیح: <span id="score"></span> از ۱۰</p>
-      <button id="retryBtn" style="display: inline-block; margin-top: 20px;">تکرار آزمون</button>
-      <p style="margin-top: 20px;">
-        <a href="https://polarisone09.github.io/Polaris/#" target="_blank" style="text-decoration: none; color: #2980b9;">
-    وبسایت Polarisacademy
+      <button id="retryBtn">تکرار آزمون</button>
+      <!-- لینک معرفی Polarisacademy -->
+      <p style="margin-top:20px;">
+        <a href="https://polarisone09.github.io/Polaris/#"
+           target="_blank"
+           style="text-decoration:none;color:#2980b9;">
+          وبسایت Polarisacademy
         </a>
-      </p>    
+      </p>
     </div>
   </div>
 
