@@ -69,16 +69,34 @@
 
     button {
       padding: 10px 20px;
-      font-size: 18px;
+      font-size: 17px;
       border: none;
       border-radius: 4px;
-      background: #2980b9;
+      background: #1e83c6;
       color: #fff;
       cursor: pointer;
       font-family: inherit;
       display: inline-block;
       margin-top: 20px;
+      
     }
+
+    .custom-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #1e83c6;/* این رنگ را می‌توانید به دلخواه عوض کنید */
+    color: black;
+    text-decoration: none;
+    border: 1px solid #767676;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: sans-serif;
+  }
+
+  .custom-button:hover {
+    background-color: #2980b9; /* تغییر رنگ موقع نگه داشتن موس */
+  }
 
     #info, #prompt, #result p {
       text-align: center;
@@ -109,14 +127,18 @@
     <div id="intro" style="text-align: center;">
       <p>توالی اعداد را به خاطر بسپار و سپس تکرار کن.</p>
       <button id="startBtn">شروع آزمون</button>
-      <p style="margin-top:30px;">
-        <a href="https://adminedi.github.io/Polaris/#"
-           target="_blank"
-           style="text-decoration:none;color:#AC1754‎;"><h3>
-          لینک سایت Polarisacademy
-        </h3>
+      <p style="margin-top:10px;">
+        <a href="https://adminedi.github.io/Polarisacademy/#" target="_blank" 
+           style="display: inline-block; 
+                  padding: 10px 20px; 
+                  background-color: #1e83c6; 
+                  color: white; 
+                  text-decoration: none; 
+                  border-radius: 4px; 
+                  font-size: 17px;">
+            لینک سایت Polarisacademy
         </a>
-      </p>    
+    </p>  
     </div>
 
     <div id="test" style="display:none;">
@@ -143,7 +165,7 @@
       <h3 style="margin-top:30px;">
         <a href="https://adminedi.github.io/Polaris/#"
            target="_blank"
-           style="text-decoration:none;color:#AC1754‎;">
+           style="text-decoration:none;color:#AC1754;">
           لینک سایت Polarisacademy
            </b>
       </h3>
