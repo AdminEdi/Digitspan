@@ -5,20 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Digit Span Test</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Alice&display=swap');
-    @font-face {
-      font-family: 'Gandom';
-      src: url('Gandom.woff2') format('woff2');
-      font-weight: normal;
-      font-style: normal;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Alice&family=Sahel:wght@400;700&display=swap');
 
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       background: #fff;
-      font-family: 'Gandom','Alice',sans-serif;
+      font-family: 'Alice', 'Sahel', serif; 
       direction: rtl;
       display: flex;
       align-items: center;
@@ -32,11 +26,7 @@
       box-sizing: border-box;
     }
 
-    h2 {
-      margin: 0;
-      font-size: 24px;
-      text-align: center;
-    }
+    h2 { margin: 0; font-size: 24px; text-align: center; }
 
     #grid {
       display: grid;
@@ -49,7 +39,7 @@
     .cell {
       width: 24vw;
       height: 24vw;
-      font-size: 8vw;
+      font-size: 10vw;
       background: #aaa;
       border-radius: 6px;
       cursor: pointer;
@@ -61,10 +51,7 @@
       justify-content: center;
     }
 
-    .cell.active {
-      background: #f1c40f;
-      transform: scale(1.2);
-    }
+    .cell.active { background: #f1c40f; transform: scale(1.2); }
 
     button, .site-link {
       padding: 10px 20px;
@@ -82,39 +69,23 @@
       transition: background 0.3s;
     }
 
-    button:hover, .site-link:hover {
-      background: #1569a0;
-    }
-
     #skipBtn {
-      background-color: #469eeb; /* رنگ نارنجی برای دکمه اسکیپ */
-      margin-top: 15px;
+      background-color: #469eeb;
+      margin-top: 10px;
       font-size: 16px;
-      display: none; /* در ابتدا مخفی است */
+      display: none;
     }
 
-    #skipBtn:hover {
-      background-color: #f1c40f;
-    }
-
-    #info, #prompt, #result p {
-      text-align: center;
-      margin: 10px 0;
-    }
-
+    #info, #prompt, #result p { text-align: center; margin: 10px 0; }
     #prompt { height: 24px; }
     #result { text-align: center; display: none; }
-    #score { font-weight: bold; }
+    
+    /* درشت‌تر کردن متن پایان آزمون */
+    .result-text { font-size: 18px; line-height: 1.8; }
 
     @media (min-width: 600px) {
-      .cell {
-        width: 90px;
-        height: 90px;
-        font-size: 28px;
-      }
-      #grid {
-        grid-gap: 10px;
-      }
+      .cell { width: 90px; height: 90px; font-size:18px; }
+      #grid { grid-gap: 10px; }
     }
   </style>
 </head>
@@ -123,9 +94,9 @@
     <h2>Digit Span Test</h2>
 
     <div id="intro" style="text-align: center;">
-      <p>توالی اعداد را به خاطر بسپار و سپس تکرار کن.</p><br>
+      <p style="font-size: 18px;">توالی اعداد را به خاطر بسپار و سپس تکرار کن.</p><br>
       <button id="startBtn">شروع آزمون</button>
-      <p style="margin: top 10px;">
+      <p style="margin-top: 10px;">
         <a href="https://adminedi.github.io/Polarisacademy/#" target="_blank" class="site-link">
             لینک سایت Polarisacademy
         </a>
@@ -133,7 +104,7 @@
     </div>
 
     <div id="test" style="display:none;">
-      <div id="info">مرحله <span id="trialNum">۱</span> از ۱۰</div>
+      <div id="info">مرحله <span id="trialNum">1</span> از 10</div>
       <div id="grid">
         <div class="cell" data-val="1">1</div>
         <div class="cell" data-val="2">2</div>
@@ -152,8 +123,8 @@
     </div>
 
     <div id="result">
-      <p>آزمون به پایان رسید!</p>
-      <p>تعداد پاسخ صحیح: <span id="score"></span> از ۱۰</p><br>
+      <p class="result-text">آزمون به پایان رسید!</p>
+      <p class="result-text">تعداد پاسخ صحیح: <span id="score"></span> از 10</p><br>
       <button id="retryBtn">تکرار آزمون</button>
       <p style="margin-top:10px;">
         <a href="https://adminedi.github.io/Polarisacademy/#" target="_blank" class="site-link">
@@ -178,12 +149,7 @@
     const promptEl = document.getElementById('prompt');
     const scoreEl  = document.getElementById('score');
 
-    function toPersianNumber(input) {
-      const persian = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
-      return String(input).split('').map(ch =>
-        /\d/.test(ch) ? persian[ch] : ch
-      ).join('');
-    }
+    // تابع تبدیل عدد به فارسی حذف شد تا اعداد انگلیسی بمانند
 
     startBtn.onclick = () => {
       introEl.style.display  = 'none';
@@ -199,9 +165,9 @@
     };
 
     skipBtn.onclick = () => {
-      if (promptEl.textContent === 'در حال نمایش...') return;
+      if (promptEl.textContent === 'در حال نمایش ...') return;
       if (trial < TOTAL_TRIALS) {
-        promptEl.textContent = 'در حال انتقال...';
+        promptEl.textContent = 'در حال انتقال ...';
         setTimeout(nextTrial, 500);
       } else {
         endTest();
@@ -210,7 +176,7 @@
 
     gridEls.forEach(cell => {
       cell.onclick = () => {
-        if (promptEl.textContent !== 'نوبت شماست') return;
+        if (promptEl.textContent !== 'نوبت شماست!') return;
         userSeq.push(cell.dataset.val);
         flash(cell);
         if (userSeq.length === sequence.length) {
@@ -221,23 +187,23 @@
 
     function nextTrial() {
       trial++;
-      trialNum.textContent = toPersianNumber(trial);
+      trialNum.textContent = trial; // نمایش عدد انگلیسی
       userSeq = [];
-      skipBtn.style.display = 'none'; // مخفی کردن دکمه اسکیپ هنگام نمایش اعداد
+      skipBtn.style.display = 'none';
       
       const spanLength = 4 + Math.floor((trial - 1) / 2);
       sequence = Array.from({length: spanLength}, () =>
         String(Math.floor(Math.random() * 9) + 1)
       );
-      promptEl.textContent = 'در حال نمایش...';
+      promptEl.textContent = 'در حال نمایش ...';
       playSequence(0);
     }
 
     function playSequence(i) {
       if (i >= sequence.length) {
         setTimeout(() => {
-            promptEl.textContent = 'نوبت شماست';
-            skipBtn.style.display = 'inline-block'; // نمایش دکمه اسکیپ وقتی نوبت کاربر است
+            promptEl.textContent = 'نوبت شماست!';
+            skipBtn.style.display = 'inline-block';
         }, 500);
         return;
       }
@@ -264,7 +230,7 @@
 
     function endTest() {
       testEl.style.display   = 'none';
-      scoreEl.textContent    = toPersianNumber(score);
+      scoreEl.textContent    = score; // نمایش امتیاز انگلیسی
       resultEl.style.display = 'block';
     }
   </script>
